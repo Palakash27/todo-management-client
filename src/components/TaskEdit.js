@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import TaskForm from "./TaskForm";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const TaskEdit = () => {
     const { id } = useParams();
     const [taskData, setTaskData] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchTaskDetails = async () => {
@@ -40,8 +41,15 @@ const TaskEdit = () => {
     };
 
     return (
-        <div>
-            <h2>Edit Task</h2>
+        <div className="max-w-md mx-auto mt-8 p-4 border rounded-lg bg-white">
+            <button
+                onClick={() => navigate("/")}
+                className="text-blue-500 text-sm mr-2 mb-4"
+            >
+                Back
+            </button>
+            <h2 className="text-2xl font-semibold">Edit Task</h2>
+
             {taskData ? (
                 <TaskForm initialData={taskData} onSubmit={handleSubmit} />
             ) : (
