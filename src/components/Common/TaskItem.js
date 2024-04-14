@@ -1,10 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import { getRandomColor } from "../utilities/colorUtils";
+import { getRandomColor } from "../../utils/colorUtils";
 
 const TaskItem = ({ task }) => {
-    const { _id: id, title, description, status } = task;
+    const { _id: id, title, description } = task;
     const navigate = useNavigate();
 
     const handleEditTask = async () => {
@@ -42,7 +42,6 @@ const TaskItem = ({ task }) => {
         >
             <h3 className="text-lg font-semibold mb-2">{title}</h3>
             <p className="text-sm mb-2">{description}</p>
-            {/* <p className="text-xs font-semibold">{status}</p> */}
             <div className="flex justify-between mt-2">
                 <button
                     onClick={handleEditTask}
