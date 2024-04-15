@@ -24,7 +24,7 @@ const TaskList = ({ title, tasks, onDragOver, onDrop }) => {
 
     return (
         <div
-            className="w-1/3 border rounded-lg p-4"
+            className="w-2/3 md:w-1/3 border rounded-lg p-4 m-2"
             onDrop={onDrop}
             onDragOver={onDragOver}
         >

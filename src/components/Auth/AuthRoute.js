@@ -1,11 +1,15 @@
 import React from "react";
-import { Outlet, Navigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
+import { Navigate, Outlet } from "react-router-dom";
+import { ROUTES } from "../../constants/routes";
+import { useAuthContext } from "../../contexts/AuthContext";
 
 const AuthRoute = ({ component: Component, path }) => {
-    const { isAuthenticated } = useAuth();
+    const { isLoggedIn } = useAuthContext();
 
-    return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+    if (!isLoggedIn) {
+        return <Navigate to={ROUTES.LOGIN} />;
+    }
+    return <Outlet />;
 };
 
 export default AuthRoute;

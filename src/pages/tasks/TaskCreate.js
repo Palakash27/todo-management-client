@@ -1,28 +1,20 @@
 import React from "react";
-import TaskForm from "../Common/TaskForm";
 import { useNavigate } from "react-router-dom";
+import TaskForm from "../../components/Common/TaskForm";
+import { ROUTES } from "../../constants/routes";
+import { taskService } from "../../services/task.service";
 
 const TaskCreate = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (formData) => {
-        const response = await fetch("http://localhost:3001/api/tasks", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-        });
-
-        if (!response.ok) {
-            throw new Error("Failed to create task");
-        }
+        await taskService.createTask(formData);
     };
 
     return (
         <div className="max-w-md mx-auto mt-8 p-4 border rounded-lg bg-white">
             <button
-                onClick={() => navigate("/")}
+                onClick={() => navigate(ROUTES.HOME)}
                 className="text-blue-500 text-sm mr-2 mb-4"
             >
                 Back

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../constants/routes";
 
 const TaskForm = ({ initialData, onSubmit }) => {
     const [title, setTitle] = useState(initialData?.title || "");
@@ -25,7 +26,7 @@ const TaskForm = ({ initialData, onSubmit }) => {
             setStatus("To Do");
 
             // Navigate to the home page
-            navigate("/");
+            navigate(ROUTES.HOME);
         } catch (error) {
             console.error("Error creating task:", error);
         }
@@ -35,6 +36,7 @@ const TaskForm = ({ initialData, onSubmit }) => {
         <form onSubmit={handleSubmit} className="mt-4 max-w-md mx-auto">
             <div className="mb-4">
                 <input
+                    autoComplete="off"
                     autoFocus
                     type="text"
                     value={title}

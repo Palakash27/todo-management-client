@@ -1,40 +1,31 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ROUTES } from "../constants/routes";
+import { useAuthContext } from "../contexts/AuthContext";
+import { userService } from "../services/user.service";
 
 const Signup = () => {
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
+    const [error, setError] = useState("");
+    const { isLoggedIn } = useAuthContext();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate("/");
+        }
+    }, [isLoggedIn, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(
-                "http://localhost:3001/api/user/register",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        fullName,
-                        email,
-                        password,
-                        username,
-                    }),
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error("Signup failed");
-            }
-
-            navigate("/login"); // Redirect to login page after successful signup
+            await userService.signup(fullName, email, password, username);
+            navigate(ROUTES.LOGIN); // Redirect to login page after successful signup
         } catch (error) {
-            console.error("Signup error:", error);
+            setError(error.message || "Signup failed");
         }
     };
 
@@ -44,9 +35,21 @@ const Signup = () => {
             <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <input
+                        autoComplete="username"
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value.trim())}
+                        placeholder="Username"
+                        className="border rounded-md p-2 w-full"
+                        required
+                    />
+                </div>
+                <div className="mb-4">
+                    <input
+                        autoComplete="name"
                         type="text"
                         value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
+                        onChange={(e) => setFullName(e.target.value.trim())}
                         placeholder="Full Name"
                         className="border rounded-md p-2 w-full"
                         required
@@ -54,9 +57,10 @@ const Signup = () => {
                 </div>
                 <div className="mb-4">
                     <input
+                        autoComplete="email"
                         type="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value.trim())}
                         placeholder="Email"
                         className="border rounded-md p-2 w-full"
                         required
@@ -64,20 +68,11 @@ const Signup = () => {
                 </div>
                 <div className="mb-4">
                     <input
+                        autoComplete="password"
                         type="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value.trim())}
                         placeholder="Password"
-                        className="border rounded-md p-2 w-full"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Username"
                         className="border rounded-md p-2 w-full"
                         required
                     />
@@ -89,9 +84,14 @@ const Signup = () => {
                     Sign Up
                 </button>
             </form>
+            {error && (
+                <div className="mb-4 mt-4 text-red-500">
+                    <p>{error}</p>
+                </div>
+            )}
             <p className="mt-4">
                 Already have an account?{" "}
-                <Link to="/login" className="text-blue-500">
+                <Link to={ROUTES.LOGIN} className="text-blue-500">
                     Log in
                 </Link>
             </p>

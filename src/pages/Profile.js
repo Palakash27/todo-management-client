@@ -1,45 +1,21 @@
-import React, { useState, useEffect } from "react";
-import useAuth from "../../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useAuthContext } from "../contexts/AuthContext";
+import { userService } from "../services/user.service";
 
 const Profile = () => {
-    const { isAuthenticated, logout } = useAuth();
     const [user, setUser] = useState(null);
-    const navigate = useNavigate();
+    const { isLoggedIn, logout } = useAuthContext();
 
     useEffect(() => {
         const fetchUserData = async () => {
-            try {
-                if (isAuthenticated) {
-                    const token = localStorage.getItem("token");
-                    const response = await fetch(
-                        "http://localhost:3001/api/user/profile",
-                        {
-                            method: "GET",
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                            },
-                        }
-                    );
-
-                    if (!response.ok) {
-                        throw new Error("Failed to fetch user data");
-                    }
-
-                    const userData = await response.json();
-                    setUser(userData);
-                }
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-            }
+            const userData = await userService.fetchUserData();
+            setUser(userData);
         };
-
         fetchUserData();
-    }, [isAuthenticated]);
+    }, []);
 
     const handleLogout = () => {
         logout();
-        navigate("/login");
     };
 
     return (
@@ -56,7 +32,7 @@ const Profile = () => {
                         />
                     </div>
                     <div>
-                        {isAuthenticated && user ? (
+                        {isLoggedIn && user ? (
                             <div>
                                 <p className="text-lg text-gray-700 mb-2">
                                     <span className="font-bold">Username:</span>{" "}

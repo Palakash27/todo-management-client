@@ -1,38 +1,29 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ROUTES } from "../constants/routes";
+import { useAuthContext } from "../contexts/AuthContext";
+import { userService } from "../services/user.service";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const { login, isLoggedIn } = useAuthContext();
     const navigate = useNavigate();
-    const { login } = useAuth();
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate("/");
+        }
+    }, [isLoggedIn, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(
-                "http://localhost:3001/api/user/login",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ email, password }),
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error("Login failed");
-            }
-
-            const data = await response.json();
-            console.log(data);
-            login(data.userToken); // Store the JWT token in local storage
-            navigate("/"); // Redirect to home page after successful login
+            const data = await userService.login(email, password);
+            login(data.userToken);
         } catch (error) {
-            console.error("Login error:", error);
+            setError(error.message || "Login failed");
         }
     };
 
@@ -42,19 +33,21 @@ const Login = () => {
             <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <input
-                        type="email"
+                        autoComplete="email"
+                        type="text"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Email"
+                        onChange={(e) => setEmail(e.target.value.trim())}
+                        placeholder="Username or Email"
                         className="border rounded-md p-2 w-full"
                         required
                     />
                 </div>
                 <div className="mb-4">
                     <input
+                        autoComplete="password"
                         type="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value.trim())}
                         placeholder="Password"
                         className="border rounded-md p-2 w-full"
                         required
@@ -67,9 +60,14 @@ const Login = () => {
                     Login
                 </button>
             </form>
+            {error && (
+                <div className="mb-4 mt-4 text-red-500">
+                    <p>{error}</p>
+                </div>
+            )}
             <p className="mt-4">
                 Don't have an account?{" "}
-                <Link to="/signup" className="text-blue-500">
+                <Link to={ROUTES.SIGN_UP} className="text-blue-500">
                     Sign up
                 </Link>
             </p>

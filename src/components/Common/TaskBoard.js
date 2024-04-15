@@ -1,33 +1,46 @@
 import React, { useState, useEffect } from "react";
 import TaskList from "./TaskList";
 import { useNavigate } from "react-router-dom";
+import { taskService } from "../../services/task.service";
 
-const TaskBoard = () => {
+const TaskBoard = ({ searchQuery }) => {
     const [tasks, setTasks] = useState([]);
+    const [filteredTasks, setFilteredTasks] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Fetch tasks data from the API
         const fetchTasks = async () => {
-            try {
-                const response = await fetch("http://localhost:3001/api/tasks");
-                if (!response.ok) {
-                    throw new Error("Failed to fetch tasks");
-                }
-                const data = await response.json();
-                setTasks(data);
-            } catch (error) {
-                console.error("Error fetching tasks:", error);
-                // Handle error
-            }
+            const data = await taskService.fetchTasks();
+            setTasks(data);
         };
-
         fetchTasks();
     }, []);
 
+    useEffect(() => {
+        const filterTasksBySearch = (searchQuery) => {
+            console.log(searchQuery);
+            console.log(tasks);
+            return tasks.filter((task) => {
+                return (
+                    task.title
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase()) ||
+                    task.description
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase())
+                );
+            });
+        };
+        let filteredTasks = filterTasksBySearch(searchQuery);
+        setFilteredTasks(filteredTasks);
+    }, [searchQuery, tasks]);
+
     // Function to filter tasks by status
     const filterTasksByStatus = (status) => {
-        return tasks.filter((task) => task.status === status);
+        if (searchQuery.trim() === "") {
+            return tasks.filter((task) => task.status === status);
+        }
+        return filteredTasks.filter((task) => task.status === status);
     };
 
     const onDragOver = (e) => {
@@ -37,33 +50,17 @@ const TaskBoard = () => {
     const onDrop = async (e, category) => {
         let id = e.dataTransfer.getData("task-id");
 
-        const getData = await fetch(`http://localhost:3001/api/tasks/${id}`);
-
-        if (!getData.ok) {
-            throw new Error("Failed to fetch task details");
-        }
-        const data = await getData.json();
+        // Fetch task data by id
+        const data = await taskService.fetchTaskById(id);
         data.status = category;
 
-        const updateData = await fetch(
-            `http://localhost:3001/api/tasks/${id}`,
-            {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            }
-        );
-
-        if (!updateData.ok) {
-            throw new Error("Failed to create task");
-        }
+        // Update task status
+        await taskService.updateTask(id, data);
         navigate(0);
     };
 
     return (
-        <div className="flex justify-between mt-4 bg-gray-50">
+        <div className="flex flex-col md:flex-row justify-center items-center md:justify-between md:items-start m-4 bg-gray-50">
             <TaskList
                 title="To Do"
                 tasks={filterTasksByStatus("To Do")}
