@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { IMAGES } from "../constants/images";
 import { useAuthContext } from "../contexts/AuthContext";
 import { userService } from "../services/user.service";
+import ProfileModal from "./ProfileModal";
 
 const Profile = () => {
     const [user, setUser] = useState(null);
+    const [showModal, setShowModal] = useState(false);
     const { isLoggedIn, logout } = useAuthContext();
 
     useEffect(() => {
@@ -18,18 +21,35 @@ const Profile = () => {
         logout();
     };
 
+    const handleEditPicture = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
     return (
         <div className="container mx-auto mt-8 flex justify-center items-center">
             <div className="bg-white shadow-md rounded-md p-8 items-center flex flex-col">
                 <div className="flex">
-                    <div className="mr-8">
+                    <div className="mr-8 relative">
                         <img
                             src={
-                                "https://media.licdn.com/media/AAYQAgTPAAgAAQAAAAAAADVuOvKzTF-3RD6j-qFPqhubBQ.png"
+                                user && user.avatar
+                                    ? user.avatar
+                                    : IMAGES.Avatar1
                             }
                             alt="Profile"
-                            className="w-24 h-24 rounded-full"
+                            className="w-24 h-24 rounded-full cursor-pointer"
+                            onClick={handleEditPicture}
                         />
+                        <button
+                            onClick={handleEditPicture}
+                            className="absolute bottom-0 right-0 bg-blue-500 text-white rounded-full p-2 cursor-pointer"
+                        >
+                            Edit
+                        </button>
                     </div>
                     <div>
                         {isLoggedIn && user ? (
@@ -59,6 +79,14 @@ const Profile = () => {
                     Logout
                 </button>
             </div>
+            {showModal && (
+                <ProfileModal
+                    showModal={showModal}
+                    handleCloseModal={handleCloseModal}
+                    user={user}
+                    setUser={setUser}
+                />
+            )}
         </div>
     );
 };

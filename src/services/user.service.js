@@ -46,8 +46,23 @@ const signup = async (fullName, email, password, username) => {
     return await response.json();
 };
 
+const updateProfilePicture = async (userId, avatarUrl) => {
+    const response = await apiRequest(`${PROFILE}/${userId}`, {
+        method: "PATCH",
+        body: { avatar: avatarUrl },
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+
+    return await response.json();
+};
+
 export const userService = {
     fetchUserData,
     login,
     signup,
+    updateProfilePicture,
 };
