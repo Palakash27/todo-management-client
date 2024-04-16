@@ -11,11 +11,9 @@ const TaskList = ({ title, tasks, onDragOver, onDrop }) => {
     };
 
     const sortedTasks = [...tasks].sort((a, b) => {
-        if (sortOrder === "asc") {
-            return a.title.localeCompare(b.title);
-        } else {
-            return b.title.localeCompare(a.title);
-        }
+        return sortOrder === "asc"
+            ? a.title.localeCompare(b.title)
+            : b.title.localeCompare(a.title);
     });
 
     const toggleDropdown = () => {
