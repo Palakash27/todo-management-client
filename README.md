@@ -1,70 +1,59 @@
-# Getting Started with Create React App
+# Task Management Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+This project is a task management application built using React for the frontend and Node.js with Express for the backend. It allows users to manage their tasks by creating, updating, and deleting them. Users can also sort and search tasks based on various criteria.
 
-In the project directory, you can run:
+## Pages
 
-### `npm start`
+-   **Home:** Displays a list of tasks grouped by status (To Do, In Progress, Done).
+-   **Login:** Allows users to log in to their account.
+-   **Signup:** Allows new users to create an account.
+-   **Task Create:** Allows users to create a new task.
+-   **Task Update:** Allows users to update an existing task.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+-   **Authentication:** Users can log in to their account and only their tasks are displayed.
+-   **Task Management:** Users can create, update, and delete tasks.
+-   **Drag and Drop:** Tasks can be moved between different status piles by dragging and dropping.
+-   **Sorting:** Tasks can be sorted based on title.
+-   **Searching:** Users can search for tasks by typing letters in the search bar.
+-   **Responsive Design:** The application is responsive and works on all devices.
+-   **Error Handling:** Error messages are displayed when an error occurs.
+-   **Validation:** Form validation is implemented to ensure that the user enters valid data.
+-   **User profiles with avatar:** Users can choose their avatar.
 
-### `npm test`
+## Assumptions
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+-   Users are required to log in to view and manage their tasks.
+-   Only authenticated users can access the task management features.
+-   Tasks are displayed based on their status (To Do, In Progress, Done).
+-   The application supports basic CRUD operations for tasks (Create, Read, Update, Delete).
+-   Task details include information such as title, description, status, etc.
+-   Users can sort tasks by clicking on the sort button located at the top of each status tab.
+-   Users can search for tasks by typing any letters in the title or description fields.
 
-### `npm run build`
+## Installation - Node Version (v20.5.0) and npm version (10.5.1)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Clone the repository: `git clone <repository-url>`
+2. Navigate to the project directory: `cd client`
+3. Install dependencies: `npm install`
+4. Start the backend server: `npm start`
+5. Navigate to the frontend directory: `cd client`
+6. Install frontend dependencies: `npm install`
+7. Start the frontend server: `npm start`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Technologies Used
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+-   React.js
+-   Node.js
+-   Express
+-   MongoDB
+-   HTML/CSS
+-   JavaScript
+-   Tailwind CSS
 
-### `npm run eject`
+## Author
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Aakash Pal
