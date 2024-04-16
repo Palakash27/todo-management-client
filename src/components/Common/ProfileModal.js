@@ -1,7 +1,7 @@
 import React from "react";
-import { IMAGES } from "../constants/images";
-import { userService } from "../services/user.service";
-import Avatar from "./Avatar"; // Component for displaying avatars
+import { IMAGES } from "../../constants/images";
+import { userService } from "../../services/user.service";
+import Avatar from "./Avatar";
 
 const ProfileModal = ({ showModal, handleCloseModal, user, setUser }) => {
     const handleAvatarSelection = async (avatarUrl) => {

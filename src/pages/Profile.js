@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
+import ProfileModal from "../components/Common/ProfileModal";
 import { IMAGES } from "../constants/images";
 import { useAuthContext } from "../contexts/AuthContext";
 import { userService } from "../services/user.service";
-import ProfileModal from "./ProfileModal";
 
 const Profile = () => {
     const [user, setUser] = useState(null);
