@@ -1,5 +1,6 @@
-import { BASE_URL } from "./environment";
 import { localStorage } from "./token";
+
+const BASE_URL = "http://localhost:3001";
 
 export const createRequestHeaders = () => {
     const token = localStorage.getToken();
